@@ -9,8 +9,6 @@ Software Requirements :
 
 For Linux :
 
-Software Requirements : 
-
 Latest version of swi-prolog can be downloaded and installed from 
 http://www.swi-prolog.org/download/stable
 
