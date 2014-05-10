@@ -19,8 +19,8 @@ https://www.java.com/en/download
 
 Compilation :
 ============
-Use make to compile all components.
+Use "make" to compile all components.
 
 Running :
 ============
-Run java Board from the terminal.
+Run "java Board" from the terminal.
