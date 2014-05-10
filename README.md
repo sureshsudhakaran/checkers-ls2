@@ -15,7 +15,7 @@ Latest version of swi-prolog can be downloaded and installed from
 http://www.swi-prolog.org/download/stable
 
 The latest version of java can be downloaded from
-https://www.java.com/en/download/
+https://www.java.com/en/download
 
 Compilation :
 ============
