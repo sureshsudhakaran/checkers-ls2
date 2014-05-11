@@ -6,12 +6,11 @@ import java.util.*;
 import java.net.* ;
 import java.io.*;
 
-public class Board implements ActionListener
+public class Board4 implements ActionListener
 {
 	JFrame J;										//The Frame for the Board
 	JPanel P;
-	int turn;										
-	int move;										//The Move number 
+	int turn;
 	int flag;
 	Process prologProcess;
 	String prolog=new String();
@@ -68,21 +67,20 @@ public class Board implements ActionListener
 			color=1;
 			else
 			color=2;
-			if((x<=3)&&(((x+y)%2)==1))										//Setting the state of a square for the initial configuration of the 8x8 board
+			if((x==1)&&(((x+y)%2)==1))										//Setting the state of a square for the initial configuration of the 8x8 board
 			state=1;
-			if((x>=6)&&(((x+y)%2)==1))
+			if((x==4)&&(((x+y)%2)==1))
 			state=2;
 		}
 		
 	}
-	boolean firclick;								//Set to true if the player has clicked a square on which one of his pieces are present
-	boolean morecappos;							//Set to true after a move if further capture from the moved piece is possible.
-	Sq s1,s2,s3;									//To keep track of which squares are clicked during a move
-	ArrayList <Sq> Bt=new ArrayList <Sq>();		//An array of squares
-	Board()											//Sets the initial configuration of the board
+	boolean firclick;								//Set to true if the player has clicked the square
+	boolean morecappos;
+	Sq s1,s2,s3;
+	ArrayList <Sq> Bt=new ArrayList <Sq>();
+	Board4()
 	{
 		firclick=false;
-		move=1;
 		Sq B;
 		turn=0;
 		flag=0;
@@ -91,8 +89,8 @@ public class Board implements ActionListener
 		str2="";
 		J = new JFrame();
 		P = new JPanel();
-		for(int i=1;i<=8;i++)
-		for(int j=1;j<=8;j++)
+		for(int i=1;i<=4;i++)
+		for(int j=1;j<=4;j++)
 		{
 			B=new Sq(i,j);
 			if(B.getcol()==1)
@@ -114,12 +112,12 @@ public class Board implements ActionListener
 				}catch(IOException Ex){}
 			}
 			B.setActionCommand(Integer.toString(i)+","+Integer.toString(j));
-			B.addActionListener(this);									//make every square an ActionListener
+			B.addActionListener(this);
 			Bt.add(B);
 		}
-		J.setSize(640,640);
-		P.setSize(640,640);
-		P.setLayout(new GridLayout(8,8));
+		J.setSize(400,400);
+		P.setSize(400,400);
+		P.setLayout(new GridLayout(4,4));
 		J.add(P);
 		for(Sq Bi:Bt)
 			P.add(Bi);
@@ -129,59 +127,58 @@ public class Board implements ActionListener
 			Bi.setVisible(true);
 		J.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	public void actionPerformed(ActionEvent act)						//Defines the Actions That will be performed when an event occurs
+	public void actionPerformed(ActionEvent act)
 	{
-		if(!checkstale(2)){
 		morecappos=false;
-		/*System.out.println("Current System Stat");
+		System.out.println("Current System Stat");
 		for(Sq Bj:Bt)
 		{
 			if(Bj.getstate()!=0)
 			System.out.println("X and Y are "+Bj.getstring());
-		}*/
+		}
 		
-		if((((Sq)act.getSource()).getstate()==2)&&(firclick==false))	//clicked the first square for the move
+		if((((Sq)act.getSource()).getstate()==2)&&(firclick==false))
 		{
 			firclick=true;
 			s1=(Sq)act.getSource();
 		}
 		else
 		{
-			if((((Sq)act.getSource()).getstate()==0)&&(firclick==true))//clicked the second square for the move
+			if((((Sq)act.getSource()).getstate()==0)&&(firclick==true))
 			{
 				s2=(Sq)act.getSource();
-				//System.out.println("S1 is position (" + s1.getx() + "," + s1.gety()+")");
-				//System.out.println("S2 is position (" + s2.getx() + "," + s2.gety()+")");
-				if(valmove(s1,s2))															//checks if the move is valid and makes appropriate changes
+				System.out.println("S1 is position (" + s1.getx() + "," + s1.gety()+")");
+				System.out.println("S2 is position (" + s2.getx() + "," + s2.gety()+")");
+				if(valmove(s1,s2))
 				{
-					//System.out.println("Changing icons");
+					System.out.println("Changing icons");
 					s2.setIcon(s1.getIcon());
 					s2.setstate(s1.getstate());
 					s1.setstate(0);
 					s1.setIcon(null);
 					s1.repaint();
 					s2.repaint();
-					//System.out.println("Changing icons complete");
+					System.out.println("Changing icons complete");
 					if((s2.getx()-s1.getx())==-2)
 					{
 						for(Sq Bi:Bt)
 						{
 							if((Bi.getx()==s2.getx()+1)&&(Bi.gety()==(s2.gety()+s1.gety())/2))
 							{
-								//System.out.println("Found dem");
+								System.out.println("Found dem");
 								Bi.setIcon(null);
 								Bi.setstate(0);
 							}
 						}
-						morecappos=mulcappos(s2,2);										//checks if more captures are possible from the position to which the square was moved
+						morecappos=mulcappos(s2,2);
 					}
 					str1=s1.getActionCommand();
 					str2=s2.getActionCommand();
 					str1="["+str1+"]";
 					str2="["+str2+"]";
-					//System.out.println("Str 1 is " + str1);
-					//System.out.println("Str 2 is " + str2);
-					ss+="[";												//Store the state of the board in string ss in prolog's list format
+					System.out.println("Str 1 is " + str1);
+					System.out.println("Str 2 is " + str2);
+					ss+="[";
 					ListIterator<Sq> lI = Bt.listIterator(Bt.size());
 					 while (lI.hasPrevious())
 					{
@@ -202,9 +199,9 @@ public class Board implements ActionListener
 						}
 					}	
 					ss+="[]]";
-					ss="["+ss+"].";											
-					//System.out.println("Sent string is "+ss);
-					turn=1;													//Write the string to a file
+					ss="["+ss+"].";	
+					System.out.println("Sent string is "+ss);
+					turn=1;
 					try
 					{
 						File file= new File("un.txt");
@@ -226,12 +223,9 @@ public class Board implements ActionListener
 						}
 					}
 					if((flag==0)&&(!(morecappos)))
-					compmove();												//Call the computer to make a move
-					else
-					{
-						if(morecappos)
-						ss="";
-					}
+					compmove();
+					if(morecappos)
+					ss="";
 				}
 				else
 				{
@@ -245,8 +239,8 @@ public class Board implements ActionListener
 				s1=null;
 			}
 		}
-	}}
-	public boolean sear(int i,int j,int w)								//Returns true if the Square at position (i,j) has state "w", false otherwise
+	}
+	public boolean sear(int i,int j,int w)
 	{
 		for(Sq Bi:Bt)
 		{
@@ -255,7 +249,7 @@ public class Board implements ActionListener
 		}
 		return false;
 	}
-	public void serset(int i, int j, int w)								//Sets the state of the Square at position (i,j) to "w"
+	public void serset(int i, int j, int w)
 	{
 		for(Sq Bi:Bt)
 		{
@@ -263,55 +257,32 @@ public class Board implements ActionListener
 			s3=Bi;
 		}
 	}
-	public boolean valmove(Sq si, Sq sj)									//Checks if a move from si to sj is valid.
+	public boolean valmove(Sq si, Sq sj)
 	{
-		//System.out.println("Entering valmove");
+		System.out.println("Entering valmove");
 		boolean t=capmovepos();
 		if(((si.getx()-1)==sj.getx())&&((((si.gety())+1)==sj.gety())||(((si.gety())-1)==sj.gety()))&&(!t))
 		{
-			//System.out.println("Exiting valmove");
+			System.out.println("Exiting valmove");
 			return true;
 		}
 		if((t)&&((si.getx()-2)==sj.getx())&&((si.gety()+2==sj.gety())||(si.gety()-2==sj.gety()))&&(sear(si.getx()-1,(si.gety()+sj.gety())/2,1)))
 		{
-			//System.out.println("Exiting valmove for capture");
+			System.out.println("Exiting valmove for capture");
 			//serset(si.getx()+1,(si.gety()+sj.gety())/2,1);
 			return true;
 		}
 		else
 		{
-			//System.out.println("Exiting valmove with false");
+			System.out.println("Exiting valmove with false");
 			return false;
 		}
 	}
-	public boolean checkstale(int w)						//Checks for stalemate
-	{
-		boolean staleflag=true;
-		for(Sq Bi:Bt)
-		{
-			if(Bi.getstate()==w)
-			{
-				for(Sq Bj:Bt)
-				if(valmove(Bi,Bj))
-				{
-					staleflag=false;
-					break;
-				}
-			}
-		}
-		if(staleflag==true)
-		{
-			System.out.println("Stalemate");
-			return staleflag;
-		}
-		else
-		return staleflag;
-	}
-	public boolean mulcappos(Sq csq,int w)								//Checks if multiple captures are possible from position csq
+	public boolean mulcappos(Sq csq,int w)
 	{
 		boolean cappos=false;
-		/*if(csq==null)
-		System.out.println("Mulcappose called with null");*/
+		if(csq==null)
+		System.out.println("Mulcappose called with null");
 		if(w==2){
 		for(Sq Bj:Bt)
 		{
@@ -373,15 +344,10 @@ public class Board implements ActionListener
 			}
 		}}
 	}
-		/*if(cappos==true)
-		for(long u=250000;u>-25000;u--)
-		for(long v=250000;v>-25000;v--)
-		{
-			v++;
-			v--;
-		}
-		/*else
-		System.out.println("mulcappos returns false");*/
+		if(cappos==true)
+		System.out.println("mulcappos returns true");
+		else
+		System.out.println("mulcappos returns false");
 		return cappos;
 	}
 	public boolean capmovepos()
@@ -420,26 +386,25 @@ public class Board implements ActionListener
 		}
 		return cappos;
 	}
-	public void compmove()												//Calls the prolog program to make move on behalf of the computer
+	public void compmove()
 	{
-		if(!checkstale(1)){
 		ss="";
 		boolean capflag=false;
 		Sq n1=null;
 		turn=0;
 		try
 		{
-			prologProcess =  Runtime.getRuntime().exec("sh dem");
-			BufferedReader in = new BufferedReader(new InputStreamReader(prologProcess.getInputStream()));  //reads the ouput of the prolog program
+			prologProcess =  Runtime.getRuntime().exec("sh dem4");
+			BufferedReader in = new BufferedReader(new InputStreamReader(prologProcess.getInputStream()));  
 			String line = null;  
 			while ((line = in.readLine()) != null) 
 			{  
-				//System.out.println("The line is "+ line);
+				System.out.println("The line is "+ line);
 				String d1=new String();
 				String d2=new String();
 				d1=line.substring(1,6);
 				d2=line.substring(7,12);
-				System.out.println("Move given by computer " + move);
+				System.out.println("Move given by computer");
 				System.out.println(d1);  
 				System.out.println(d2);  
 				
@@ -451,20 +416,20 @@ public class Board implements ActionListener
 				{
 					if((Bi.getx()==c1-48)&&(Bi.gety()==c2-48))
 					{
+						Icon I1=Bi.getIcon();
+						Bi.setIcon(null);
+						Bi.setstate(0);
 						for(Sq Bj:Bt)
 						{
 							if((Bj.getx()==c3-48)&&(Bj.gety()==c4-48))
 							{
-								Bj.setIcon(Bi.getIcon());
+								Bj.setIcon(I1);
 								Bj.setstate(1);
-								Bi.setIcon(null);
-								Bi.setstate(0);
-								Bi.repaint();
-								Bj.repaint();
-								if(((Bj.getx()-Bi.getx())==2)||((Bj.getx()-Bi.getx())==-2))
+								
+								if(((Bj.getx()-Bi.getx())==2)||(((Bj.getx()-Bi.getx())==-2)))
 								{
 									n1=Bj;
-									//System.out.println("Capture flag set");
+									System.out.println("Capture flag set");
 									capflag=true;
 									for(Sq Bk:Bt)
 									{
@@ -474,42 +439,42 @@ public class Board implements ActionListener
 										Bk.setstate(0);
 										//s[Bk.getx()][Bk.gety()]="";
 										Bk.repaint();
-										//System.out.println("Repaint called for "+Bk.getx()+","+Bk.gety()+"and their state is "+Bk.getstate());
-									}
 									}
 								}
 							}
-							//Bj.repaint();
 						}
+						Bj.repaint();
 					}
 				}
+			}
 			
-			//System.out.println("Destroyed ");
-			}  
+			//System.out.println("Destroyed in seconds");
+		}  
 		}catch(Exception xx) {System.out.println(xx) ; }
 		prologProcess.destroy();
-		/*System.out.println("Current System Stat");
+		System.out.println("Current System Stat");
 		
 		for(Sq Bj:Bt)
 		{
 			if(Bj.getstate()!=0)
 			System.out.println("X and Y are [" + Bj.getx() +"," + Bj.gety()+")");
-		}*/
+		}
 		for(Sq Bi:Bt)
 		{
-			if((Bi.getx()==8)&&(Bi.getstate()==1))
+			if((Bi.getx()==4)&&(Bi.getstate()==1))
 			{
 				JOptionPane.showMessageDialog(J,"Computer wins");
 				flag=1;
 				System.exit(0);
 			}
+			
 		}
 		if(capflag)
 		{
-			//System.out.println("Capflag is set here");
+			System.out.println("Capflag is set here");
 		if(mulcappos(n1,1))
 		{
-			//System.out.println("mulcappos is set here");
+			System.out.println("mulcappos is set here");
 			ss+="[";
 			ss+=n1.getstring();
 			ss+=",[]],[";
@@ -523,7 +488,7 @@ public class Board implements ActionListener
 			}	
 			ss+="[]]";
 			ss="["+ss+"].";	
-			//System.out.println("Sent string is "+ss);
+			System.out.println("Sent string is "+ss);
 			turn=1;
 			try
 			{
@@ -535,18 +500,12 @@ public class Board implements ActionListener
 				bw.close();	
 				fw.close();
 			}catch(IOException ex){System.out.println("failed");ex.printStackTrace();}
-			//System.out.println("Multiple capture sequence. Writing to file string " + ss);
+			System.out.println("Multiple capture sequence. Writing to file string " + ss);
 			compmove();
 		}
-		else 
-		move++;
 	}
-	else
-	{
-		move++;
 	}
-	}}
-	public void wr()												//For the first move by the computer
+	public void wr()
 	{
 		ss+="[";
 		for(Sq Bj:Bt)
@@ -568,7 +527,7 @@ public class Board implements ActionListener
 		}	
 		ss+="[]]";
 		ss="["+ss+"].";	
-		//System.out.println("Sent string is "+ss);
+		System.out.println("Sent string is "+ss);
 		turn=1;
 		try
 		{
@@ -584,7 +543,7 @@ public class Board implements ActionListener
 	}
 	public static void main(String[] args)
 	{
-		Board wa= new Board();
+		Board4 wa= new Board4();
 		wa.wr();
 	}
 }
