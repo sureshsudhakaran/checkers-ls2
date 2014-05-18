@@ -1,7 +1,7 @@
 checkers-ls2
 ============
 
-A checkers program where the objective is to queen a piece. It uses prolog's inference mechanism to generate moves on behalf of the computer. Refer Report.pdf for more design details.
+A checkers program where the objective is to queen a piece. It uses Prolog's inference mechanism to generate moves on behalf of the computer. Refer Report.pdf for more design details.
 
 ============
 Software Requirements : 
