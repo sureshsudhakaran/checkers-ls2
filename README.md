@@ -1,7 +1,7 @@
 checkers-ls2
 ============
 
-A checkers program where the objective is to queen a piece.
+A checkers program where the objective is to queen a piece. It uses prolog's inference mechanism to generate moves on behalf of the computer. Refer Report.pdf for more design details.
 
 ============
 Software Requirements : 
@@ -25,9 +25,9 @@ Run "java Board" from the terminal.
 
 ============
 Created by :
-Suresh Sudhakaran, Computer Science and Engineering, NIT Calicut
+Suresh Sudhakaran, Department of Computer Science and Engineering, NIT Calicut
 
 Under the guidance of 
-Dr. K Muralikrishnan, Computer Science and Engineering, NIT Calicut.
+Dr. K Muralikrishnan, Department of Computer Science and Engineering, NIT Calicut.
 
-For any queries/bug reports, contact sureshsn.2010@gmail.com 
+For any queries/bug reports, please contact sureshsn.2010@gmail.com 
